@@ -197,7 +197,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           keyboardType: TextInputType.number,
                           validator: (value)
                           {
-                            if (value!.length<10)
+                            if (value!.length<10 || value.length>10)
                             {
                               return 'Please enter your Contact No';
                             }
