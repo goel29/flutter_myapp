@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/authentication.dart';
@@ -13,8 +14,9 @@ class SignupScreen extends StatefulWidget {
 
 class _SignupScreenState extends State<SignupScreen> {
 
-  final GlobalKey<FormState> _formKey = GlobalKey();
+  final _formKey = GlobalKey<FormState>();
   TextEditingController _passwordController = new TextEditingController();
+
   Map<String, dynamic> _authData = {
     'fullName': '',
     'email' : '',
@@ -48,7 +50,6 @@ class _SignupScreenState extends State<SignupScreen> {
   }
   Future<void> _submit() async
   {
-    debugPrint('validate : ${_formKey.currentState!.validate()}');
     if(!_formKey.currentState!.validate())
       {
         return;
@@ -65,7 +66,6 @@ class _SignupScreenState extends State<SignupScreen> {
       Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
     } catch(error)
     {
-     debugPrint(error.toString());
       var errorMessage = 'Authentication Failed. Please try again later';
       _showErrorDialog(errorMessage);
     }
@@ -121,13 +121,13 @@ class _SignupScreenState extends State<SignupScreen> {
                     child: Column(
                       children: <Widget>[
 
-                        //email
+
                         TextFormField(
                           decoration: InputDecoration(prefixIcon: Icon(Icons.person), labelText: 'Name'),
                           keyboardType: TextInputType.text,
                           validator: (value)
                           {
-                            if (value == null)
+                            if (value!.isEmpty)
                             {
                               return 'Please enter your name';
                             }
@@ -135,7 +135,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           },
                           onSaved: (value)
                           {
-
+                             _authData['fullName'] = value;
                           },
                         ),
 
@@ -197,9 +197,9 @@ class _SignupScreenState extends State<SignupScreen> {
                           keyboardType: TextInputType.number,
                           validator: (value)
                           {
-                            if (value!.length<10 || value.length>10)
+                            if (value!.length !=10)
                             {
-                              return 'Please enter your Contact No';
+                              return 'Please enter correct Contact No';
                             }
                             return null;
                           },
